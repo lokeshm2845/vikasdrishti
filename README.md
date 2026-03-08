@@ -1,3 +1,24 @@
+# VikasDrishti - Hyper-Local Governance Platform
+
+A geofencing-based platform that notifies citizens about development projects in their area.
+
+## Features
+- Draw geofences on map
+- Find voters in selected area
+- Send personalized notifications
+- Track satisfaction feedback
+
+## Tech Stack
+- React.js
+- Supabase (PostgreSQL + PostGIS)
+- Leaflet Maps
+- Vercel Hosting
+
+## Live Demo
+[Add your Vercel URL here after deployment]
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
