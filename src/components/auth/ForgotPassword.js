@@ -8,12 +8,12 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    
+
     const { resetPassword } = useAuth();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        
+
         if (!email) {
             toast.error('Please enter your email');
             return;
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
 
         try {
             const result = await resetPassword(email);
-            
+
             if (result.success) {
                 setSubmitted(true);
                 toast.success('Password reset email sent! Check your inbox.');
@@ -38,67 +38,83 @@ const ForgotPassword = () => {
         }
     };
 
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <Link to="/login" style={styles.backLink}>
-                    <FaArrowLeft /> Back to Login
-                </Link>
-                
-                <h2 style={styles.title}>🇮🇳 VikasDrishti</h2>
-                <h3 style={styles.subtitle}>Reset Password</h3>
+    return ( <
+        div style = { styles.container } >
+        <
+        div style = { styles.card } >
+        <
+        Link to = "/login"
+        style = { styles.backLink } >
+        <
+        FaArrowLeft / > Back to Login <
+        /Link>
 
-                {submitted ? (
-                    <div style={styles.success}>
-                        <div style={styles.successIcon}>✅</div>
-                        <h4 style={styles.successTitle}>Email Sent!</h4>
-                        <p style={styles.successMessage}>
-                            We've sent a password reset link to:<br />
-                            <strong>{email}</strong>
-                        </p>
-                        <p style={styles.successNote}>
-                            Check your email and click the link to reset your password.
-                            If you don't see it, check your spam folder.
-                        </p>
-                        <Link to="/login" style={styles.returnBtn}>
-                            Return to Login
-                        </Link>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit} style={styles.form}>
-                        <p style={styles.instructions}>
-                            Enter your email address and we'll send you a link to reset your password.
-                        </p>
+        <
+        h2 style = { styles.title } > VikasDrishti < /h2> <
+        h3 style = { styles.subtitle } > Reset Password < /h3>
 
-                        <div style={styles.inputGroup}>
-                            <FaEnvelope style={styles.inputIcon} />
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                style={styles.input}
-                                required
-                            />
-                        </div>
+        {
+            submitted ? ( <
+                div style = { styles.success } >
+                <
+                div style = { styles.successIcon } > ✅ < /div> <
+                h4 style = { styles.successTitle } > Email Sent! < /h4> <
+                p style = { styles.successMessage } >
+                We 've sent a password reset link to:<br /> <
+                strong > { email } < /strong> < /
+                p > <
+                p style = { styles.successNote } >
+                Check your email and click the link to reset your password.If you don 't see it, check your spam folder. < /
+                p > <
+                Link to = "/login"
+                style = { styles.returnBtn } >
+                Return to Login <
+                /Link> < /
+                div >
+            ) : ( <
+                form onSubmit = { handleSubmit }
+                style = { styles.form } >
+                <
+                p style = { styles.instructions } >
+                Enter your email address and we 'll send you a link to reset your password. < /
+                p >
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            style={loading ? styles.buttonDisabled : styles.button}
-                        >
-                            {loading ? 'Sending...' : 'Send Reset Link'}
-                        </button>
+                <
+                div style = { styles.inputGroup } >
+                <
+                FaEnvelope style = { styles.inputIcon }
+                /> <
+                input type = "email"
+                placeholder = "Enter your email"
+                value = { email }
+                onChange = {
+                    (e) => setEmail(e.target.value)
+                }
+                style = { styles.input }
+                required /
+                >
+                <
+                /div>
 
-                        <div style={styles.links}>
-                            <Link to="/login" style={styles.link}>
-                                Remember your password? Sign In
-                            </Link>
-                        </div>
-                    </form>
-                )}
-            </div>
-        </div>
+                <
+                button type = "submit"
+                disabled = { loading }
+                style = { loading ? styles.buttonDisabled : styles.button } > { loading ? 'Sending...' : 'Send Reset Link' } <
+                /button>
+
+                <
+                div style = { styles.links } >
+                <
+                Link to = "/login"
+                style = { styles.link } >
+                Remember your password ? Sign In <
+                /Link> < /
+                div > <
+                /form>
+            )
+        } <
+        /div> < /
+        div >
     );
 };
 

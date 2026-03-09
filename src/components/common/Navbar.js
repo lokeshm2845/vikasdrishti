@@ -32,7 +32,7 @@ const Navbar = () => {
                 {/* Logo and Brand */}
                 <div style={styles.logoSection}>
                     <Link to={getDashboardLink()} style={styles.logoLink}>
-                        <span style={styles.logoIcon}>🇮🇳</span>
+                        <span style={styles.logoIcon}></span>
                         <span style={styles.logoText}>VikasDrishti</span>
                     </Link>
                 </div>

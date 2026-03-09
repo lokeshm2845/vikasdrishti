@@ -22,7 +22,7 @@ const Register = () => {
         party: ''
     });
     const [loading, setLoading] = useState(false);
-    
+
     const { signUp } = useAuth();
     const navigate = useNavigate();
 
@@ -33,9 +33,9 @@ const Register = () => {
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        
+
         if (formData.password !== formData.confirmPassword) {
             toast.error('Passwords do not match');
             return;
@@ -81,173 +81,176 @@ const Register = () => {
         }
     };
 
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h2 style={styles.title}>🇮🇳 VikasDrishti</h2>
-                <h3 style={styles.subtitle}>Create New Account</h3>
+    return ( <
+        div style = { styles.container } >
+        <
+        div style = { styles.card } >
+        <
+        h2 style = { styles.title } > VikasDrishti < /h2> <
+        h3 style = { styles.subtitle } > Create New Account < /h3>
 
-                {/* Role Selector */}
-                <div style={styles.roleSelector}>
-                    <button
-                        style={role === 'user' ? styles.roleActive : styles.roleButton}
-                        onClick={() => setRole('user')}
-                    >
-                        👤 Citizen
-                    </button>
-                    <button
-                        style={role === 'leader' ? styles.roleActive : styles.roleButton}
-                        onClick={() => setRole('leader')}
-                    >
-                        👥 Leader/MLA
-                    </button>
-                </div>
+        { /* Role Selector */ } <
+        div style = { styles.roleSelector } >
+        <
+        button style = { role === 'user' ? styles.roleActive : styles.roleButton }
+        onClick = {
+            () => setRole('user') } >
+        👤Citizen <
+        /button> <
+        button style = { role === 'leader' ? styles.roleActive : styles.roleButton }
+        onClick = {
+            () => setRole('leader') } >
+        👥Leader / MLA <
+        /button> <
+        /div>
 
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    {/* Common Fields */}
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Full Name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        style={styles.input}
-                        required
-                    />
-                    
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        style={styles.input}
-                        required
-                    />
-                    
-                    <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Phone Number"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        style={styles.input}
-                        required
-                    />
-                    
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        style={styles.input}
-                        required
-                    />
-                    
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm Password"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        style={styles.input}
-                        required
-                    />
+        <
+        form onSubmit = { handleSubmit }
+        style = { styles.form } > { /* Common Fields */ } <
+        input type = "text"
+        name = "name"
+        placeholder = "Full Name"
+        value = { formData.name }
+        onChange = { handleChange }
+        style = { styles.input }
+        required /
+        >
 
-                    {/* User-specific fields */}
-                    {role === 'user' && (
-                        <>
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder="House/Flat Number"
-                                value={formData.address}
-                                onChange={handleChange}
-                                style={styles.input}
-                            />
-                            <input
-                                type="text"
-                                name="street"
-                                placeholder="Street Name"
-                                value={formData.street}
-                                onChange={handleChange}
-                                style={styles.input}
-                            />
-                            <input
-                                type="text"
-                                name="locality"
-                                placeholder="Locality/Area"
-                                value={formData.locality}
-                                onChange={handleChange}
-                                style={styles.input}
-                            />
-                        </>
-                    )}
+        <
+        input type = "email"
+        name = "email"
+        placeholder = "Email"
+        value = { formData.email }
+        onChange = { handleChange }
+        style = { styles.input }
+        required /
+        >
 
-                    {/* Leader-specific fields */}
-                    {role === 'leader' && (
-                        <>
-                            <select
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                style={styles.input}
-                                required
-                            >
-                                <option value="">Select Title</option>
-                                <option value="MLA">MLA</option>
-                                <option value="MP">MP</option>
-                                <option value="Councilor">Councilor</option>
-                                <option value="Mayor">Mayor</option>
-                            </select>
-                            
-                            <input
-                                type="text"
-                                name="constituency"
-                                placeholder="Constituency"
-                                value={formData.constituency}
-                                onChange={handleChange}
-                                style={styles.input}
-                                required
-                            />
-                            
-                            <input
-                                type="text"
-                                name="ward"
-                                placeholder="Ward Number (if applicable)"
-                                value={formData.ward}
-                                onChange={handleChange}
-                                style={styles.input}
-                            />
-                            
-                            <input
-                                type="text"
-                                name="party"
-                                placeholder="Political Party"
-                                value={formData.party}
-                                onChange={handleChange}
-                                style={styles.input}
-                            />
-                        </>
-                    )}
+        <
+        input type = "tel"
+        name = "phone"
+        placeholder = "Phone Number"
+        value = { formData.phone }
+        onChange = { handleChange }
+        style = { styles.input }
+        required /
+        >
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        style={loading ? styles.buttonDisabled : styles.button}
-                    >
-                        {loading ? 'Creating Account...' : 'Register'}
-                    </button>
-                </form>
+        <
+        input type = "password"
+        name = "password"
+        placeholder = "Password"
+        value = { formData.password }
+        onChange = { handleChange }
+        style = { styles.input }
+        required /
+        >
 
-                <div style={styles.links}>
-                    <Link to="/login" style={styles.link}>
-                        Already have an account? Sign In
-                    </Link>
-                </div>
-            </div>
-        </div>
+        <
+        input type = "password"
+        name = "confirmPassword"
+        placeholder = "Confirm Password"
+        value = { formData.confirmPassword }
+        onChange = { handleChange }
+        style = { styles.input }
+        required /
+        >
+
+        { /* User-specific fields */ } {
+            role === 'user' && ( <
+                >
+                <
+                input type = "text"
+                name = "address"
+                placeholder = "House/Flat Number"
+                value = { formData.address }
+                onChange = { handleChange }
+                style = { styles.input }
+                /> <
+                input type = "text"
+                name = "street"
+                placeholder = "Street Name"
+                value = { formData.street }
+                onChange = { handleChange }
+                style = { styles.input }
+                /> <
+                input type = "text"
+                name = "locality"
+                placeholder = "Locality/Area"
+                value = { formData.locality }
+                onChange = { handleChange }
+                style = { styles.input }
+                /> <
+                />
+            )
+        }
+
+        { /* Leader-specific fields */ } {
+            role === 'leader' && ( <
+                >
+                <
+                select name = "title"
+                value = { formData.title }
+                onChange = { handleChange }
+                style = { styles.input }
+                required >
+                <
+                option value = "" > Select Title < /option> <
+                option value = "MLA" > MLA < /option> <
+                option value = "MP" > MP < /option> <
+                option value = "Councilor" > Councilor < /option> <
+                option value = "Mayor" > Mayor < /option> <
+                /select>
+
+                <
+                input type = "text"
+                name = "constituency"
+                placeholder = "Constituency"
+                value = { formData.constituency }
+                onChange = { handleChange }
+                style = { styles.input }
+                required /
+                >
+
+                <
+                input type = "text"
+                name = "ward"
+                placeholder = "Ward Number (if applicable)"
+                value = { formData.ward }
+                onChange = { handleChange }
+                style = { styles.input }
+                />
+
+                <
+                input type = "text"
+                name = "party"
+                placeholder = "Political Party"
+                value = { formData.party }
+                onChange = { handleChange }
+                style = { styles.input }
+                /> <
+                />
+            )
+        }
+
+        <
+        button type = "submit"
+        disabled = { loading }
+        style = { loading ? styles.buttonDisabled : styles.button } >
+        { loading ? 'Creating Account...' : 'Register' } <
+        /button> <
+        /form>
+
+        <
+        div style = { styles.links } >
+        <
+        Link to = "/login"
+        style = { styles.link } >
+        Already have an account ? Sign In <
+        /Link> <
+        /div> <
+        /div> <
+        /div>
     );
 };
 

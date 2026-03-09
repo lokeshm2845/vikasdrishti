@@ -18,7 +18,7 @@ const ResetPassword = () => {
         lowercase: false,
         special: false
     });
-    
+
     const { updatePassword } = useAuth();
     const navigate = useNavigate();
 
@@ -31,9 +31,9 @@ const ResetPassword = () => {
             lowercase: /[a-z]/.test(password),
             special: /[!@#$%^&*]/.test(password)
         };
-        
+
         setPasswordChecks(checks);
-        
+
         const strengthCount = Object.values(checks).filter(Boolean).length;
         setPasswordStrength(strengthCount);
     }, [password]);
@@ -50,9 +50,9 @@ const ResetPassword = () => {
         return 'Strong';
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        
+
         // Validation
         if (password !== confirmPassword) {
             toast.error('Passwords do not match');
@@ -73,7 +73,7 @@ const ResetPassword = () => {
 
         try {
             const result = await updatePassword(password);
-            
+
             if (result.success) {
                 toast.success('Password updated successfully!');
                 setTimeout(() => {
@@ -90,140 +90,173 @@ const ResetPassword = () => {
         }
     };
 
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <Link to="/login" style={styles.backLink}>
-                    ← Back to Login
-                </Link>
-                
-                <h2 style={styles.title}>🇮🇳 VikasDrishti</h2>
-                <h3 style={styles.subtitle}>Create New Password</h3>
+    return ( <
+        div style = { styles.container } >
+        <
+        div style = { styles.card } >
+        <
+        Link to = "/login"
+        style = { styles.backLink } > ←Back to Login <
+        /Link>
 
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    {/* New Password Field */}
-                    <div style={styles.inputGroup}>
-                        <FaLock style={styles.inputIcon} />
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="New Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            style={styles.input}
-                            required
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            style={styles.eyeButton}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                    </div>
+        <
+        h2 style = { styles.title } > VikasDrishti < /h2> <
+        h3 style = { styles.subtitle } > Create New Password < /h3>
 
-                    {/* Password Strength Meter */}
-                    {password && (
-                        <div style={styles.strengthContainer}>
-                            <div style={styles.strengthBar}>
-                                <div style={{
-                                    ...styles.strengthFill,
-                                    width: `${(passwordStrength / 5) * 100}%`,
-                                    background: getStrengthColor()
-                                }} />
-                            </div>
-                            <span style={{
-                                ...styles.strengthText,
-                                color: getStrengthColor()
-                            }}>
-                                {getStrengthText()} Password
-                            </span>
-                        </div>
-                    )}
+        <
+        form onSubmit = { handleSubmit }
+        style = { styles.form } > { /* New Password Field */ } <
+        div style = { styles.inputGroup } >
+        <
+        FaLock style = { styles.inputIcon }
+        /> <
+        input type = { showPassword ? "text" : "password" }
+        placeholder = "New Password"
+        value = { password }
+        onChange = {
+            (e) => setPassword(e.target.value) }
+        style = { styles.input }
+        required /
+        >
+        <
+        button type = "button"
+        onClick = {
+            () => setShowPassword(!showPassword) }
+        style = { styles.eyeButton } >
+        { showPassword ? < FaEyeSlash / > : < FaEye / > } <
+        /button> <
+        /div>
 
-                    {/* Password Requirements */}
-                    {password && (
-                        <div style={styles.requirements}>
-                            <p style={styles.requirementsTitle}>Password must contain:</p>
-                            <ul style={styles.requirementsList}>
-                                <li style={{
-                                    ...styles.requirement,
-                                    color: passwordChecks.length ? '#28a745' : '#dc3545'
-                                }}>
-                                    {passwordChecks.length ? '✅' : '❌'} At least 8 characters
-                                </li>
-                                <li style={{
-                                    ...styles.requirement,
-                                    color: passwordChecks.number ? '#28a745' : '#dc3545'
-                                }}>
-                                    {passwordChecks.number ? '✅' : '❌'} At least 1 number
-                                </li>
-                                <li style={{
-                                    ...styles.requirement,
-                                    color: passwordChecks.uppercase ? '#28a745' : '#dc3545'
-                                }}>
-                                    {passwordChecks.uppercase ? '✅' : '❌'} At least 1 uppercase letter
-                                </li>
-                                <li style={{
-                                    ...styles.requirement,
-                                    color: passwordChecks.lowercase ? '#28a745' : '#dc3545'
-                                }}>
-                                    {passwordChecks.lowercase ? '✅' : '❌'} At least 1 lowercase letter
-                                </li>
-                                <li style={{
-                                    ...styles.requirement,
-                                    color: passwordChecks.special ? '#28a745' : '#dc3545'
-                                }}>
-                                    {passwordChecks.special ? '✅' : '❌'} At least 1 special character (!@#$%^&*)
-                                </li>
-                            </ul>
-                        </div>
-                    )}
+        { /* Password Strength Meter */ } {
+            password && ( <
+                div style = { styles.strengthContainer } >
+                <
+                div style = { styles.strengthBar } >
+                <
+                div style = {
+                    {
+                        ...styles.strengthFill,
+                            width: `${(passwordStrength / 5) * 100}%`,
+                            background: getStrengthColor()
+                    }
+                }
+                /> <
+                /div> <
+                span style = {
+                    {
+                        ...styles.strengthText,
+                            color: getStrengthColor()
+                    }
+                } > { getStrengthText() }
+                Password <
+                /span> <
+                /div>
+            )
+        }
 
-                    {/* Confirm Password Field */}
-                    <div style={styles.inputGroup}>
-                        <FaLock style={styles.inputIcon} />
-                        <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            placeholder="Confirm New Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            style={styles.input}
-                            required
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            style={styles.eyeButton}
-                        >
-                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                    </div>
+        { /* Password Requirements */ } {
+            password && ( <
+                div style = { styles.requirements } >
+                <
+                p style = { styles.requirementsTitle } > Password must contain: < /p> <
+                ul style = { styles.requirementsList } >
+                <
+                li style = {
+                    {
+                        ...styles.requirement,
+                            color: passwordChecks.length ? '#28a745' : '#dc3545'
+                    }
+                } > { passwordChecks.length ? '✅' : '❌' }
+                At least 8 characters <
+                /li> <
+                li style = {
+                    {
+                        ...styles.requirement,
+                            color: passwordChecks.number ? '#28a745' : '#dc3545'
+                    }
+                } > { passwordChecks.number ? '✅' : '❌' }
+                At least 1 number <
+                /li> <
+                li style = {
+                    {
+                        ...styles.requirement,
+                            color: passwordChecks.uppercase ? '#28a745' : '#dc3545'
+                    }
+                } > { passwordChecks.uppercase ? '✅' : '❌' }
+                At least 1 uppercase letter <
+                /li> <
+                li style = {
+                    {
+                        ...styles.requirement,
+                            color: passwordChecks.lowercase ? '#28a745' : '#dc3545'
+                    }
+                } > { passwordChecks.lowercase ? '✅' : '❌' }
+                At least 1 lowercase letter <
+                /li> <
+                li style = {
+                    {
+                        ...styles.requirement,
+                            color: passwordChecks.special ? '#28a745' : '#dc3545'
+                    }
+                } > { passwordChecks.special ? '✅' : '❌' }
+                At least 1 special character(!@# $ % ^ & * ) <
+                /li> <
+                /ul> <
+                /div>
+            )
+        }
 
-                    {/* Password Match Indicator */}
-                    {confirmPassword && (
-                        <div style={styles.matchIndicator}>
-                            {password === confirmPassword ? (
-                                <span style={{ color: '#28a745' }}>
-                                    <FaCheckCircle /> Passwords match
-                                </span>
-                            ) : (
-                                <span style={{ color: '#dc3545' }}>
-                                    ❌ Passwords do not match
-                                </span>
-                            )}
-                        </div>
-                    )}
+        { /* Confirm Password Field */ } <
+        div style = { styles.inputGroup } >
+        <
+        FaLock style = { styles.inputIcon }
+        /> <
+        input type = { showConfirmPassword ? "text" : "password" }
+        placeholder = "Confirm New Password"
+        value = { confirmPassword }
+        onChange = {
+            (e) => setConfirmPassword(e.target.value) }
+        style = { styles.input }
+        required /
+        >
+        <
+        button type = "button"
+        onClick = {
+            () => setShowConfirmPassword(!showConfirmPassword) }
+        style = { styles.eyeButton } >
+        { showConfirmPassword ? < FaEyeSlash / > : < FaEye / > } <
+        /button> <
+        /div>
 
-                    <button
-                        type="submit"
-                        disabled={loading || password !== confirmPassword || passwordStrength < 3}
-                        style={(loading || password !== confirmPassword || passwordStrength < 3) ? styles.buttonDisabled : styles.button}
-                    >
-                        {loading ? 'Updating...' : 'Update Password'}
-                    </button>
-                </form>
-            </div>
-        </div>
+        { /* Password Match Indicator */ } {
+            confirmPassword && ( <
+                div style = { styles.matchIndicator } > {
+                    password === confirmPassword ? ( <
+                        span style = {
+                            { color: '#28a745' } } >
+                        <
+                        FaCheckCircle / > Passwords match <
+                        /span>
+                    ) : ( <
+                        span style = {
+                            { color: '#dc3545' } } > ❌Passwords do not match <
+                            /span>
+                    )
+                } <
+                /div>
+            )
+        }
+
+        <
+        button type = "submit"
+        disabled = { loading || password !== confirmPassword || passwordStrength < 3 }
+        style = {
+            (loading || password !== confirmPassword || passwordStrength < 3) ? styles.buttonDisabled : styles.button } >
+        { loading ? 'Updating...' : 'Update Password' } <
+        /button> <
+        /form> <
+        /div> <
+        /div>
     );
 };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../services/supabaseClient';
-import { FaPlusCircle, FaList, FaBell, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaList, FaUser, FaSignOutAlt } from 'react-icons/fa';
 
 const UserDashboard = () => {
     const { userData, signOut } = useAuth();
@@ -19,9 +19,9 @@ const UserDashboard = () => {
         loadComplaints();
     }, []);
 
-    const loadComplaints = async () => {
+    const loadComplaints = async() => {
         if (!userData) return;
-        
+
         try {
             const { data, error } = await supabase
                 .from('complaints')
@@ -30,19 +30,20 @@ const UserDashboard = () => {
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            
-            setComplaints(data || []);
-            
-            // Calculate stats
-            const pending = data?.filter(c => c.status === 'pending').length || 0;
-            const inProgress = data?.filter(c => c.status === 'in_progress').length || 0;
-            const resolved = data?.filter(c => c.status === 'resolved').length || 0;
-            
+
+            const complaintsData = data || [];
+            setComplaints(complaintsData);
+
+            // Calculate stats - FIXED: removed optional chaining
+            const pending = complaintsData.filter(c => c.status === 'pending').length;
+            const inProgress = complaintsData.filter(c => c.status === 'in_progress').length;
+            const resolved = complaintsData.filter(c => c.status === 'resolved').length;
+
             setStats({
                 pending,
                 inProgress,
                 resolved,
-                total: data?.length || 0
+                total: complaintsData.length
             });
         } catch (error) {
             console.error('Error loading complaints:', error);
@@ -52,163 +53,224 @@ const UserDashboard = () => {
     };
 
     const getStatusColor = (status) => {
-        switch(status) {
-            case 'pending': return '#dc3545';
-            case 'in_progress': return '#ffc107';
-            case 'resolved': return '#28a745';
-            default: return '#6c757d';
+        switch (status) {
+            case 'pending':
+                return '#dc3545';
+            case 'in_progress':
+                return '#ffc107';
+            case 'resolved':
+                return '#28a745';
+            default:
+                return '#6c757d';
         }
     };
 
     const getStatusText = (status) => {
-        switch(status) {
-            case 'pending': return 'Pending';
-            case 'in_progress': return 'In Progress';
-            case 'resolved': return 'Resolved';
-            default: return status;
+        switch (status) {
+            case 'pending':
+                return 'Pending';
+            case 'in_progress':
+                return 'In Progress';
+            case 'resolved':
+                return 'Resolved';
+            default:
+                return status;
         }
     };
 
     const getStatusIcon = (status) => {
-        switch(status) {
-            case 'pending': return '⏳';
-            case 'in_progress': return '🔄';
-            case 'resolved': return '✅';
-            default: return '📌';
+        switch (status) {
+            case 'pending':
+                return '⏳';
+            case 'in_progress':
+                return '🔄';
+            case 'resolved':
+                return '✅';
+            default:
+                return '📌';
         }
     };
 
     if (loading) {
-        return (
-            <div style={styles.loadingContainer}>
-                <div style={styles.loadingSpinner}></div>
-                <p style={styles.loadingText}>Loading your dashboard...</p>
-            </div>
+        return ( <
+            div style = { styles.loadingContainer } >
+            <
+            div style = { styles.loadingSpinner } > < /div> <
+            p style = { styles.loadingText } > Loading your dashboard... < /p> <
+            /div>
         );
     }
 
-    return (
-        <div style={styles.container}>
-            {/* Header */}
-            <div style={styles.header}>
-                <div style={styles.headerLeft}>
-                    <h1 style={styles.title}>🇮🇳 VikasDrishti</h1>
-                    <div style={styles.userInfo}>
-                        <h2 style={styles.userName}>
-                            <FaUser style={styles.userIcon} /> {userData?.name || 'User'}
-                        </h2>
-                        <p style={styles.userEmail}>{userData?.email}</p>
-                    </div>
-                </div>
-                <button onClick={signOut} style={styles.logoutBtn}>
-                    <FaSignOutAlt /> Logout
-                </button>
-            </div>
+    return ( <
+        div style = { styles.container } > { /* Header */ } <
+        div style = { styles.header } >
+        <
+        div style = { styles.headerLeft } >
+        <
+        h1 style = { styles.title } > VikasDrishti < /h1> {
+            userData && ( <
+                div style = { styles.userInfo } >
+                <
+                h2 style = { styles.userName } >
+                <
+                FaUser style = { styles.userIcon }
+                /> {userData.name || 'User'} <
+                /h2> <
+                p style = { styles.userEmail } > { userData.email || '' } < /p> <
+                /div>
+            )
+        } <
+        /div> <
+        button onClick = { signOut }
+        style = { styles.logoutBtn } >
+        <
+        FaSignOutAlt / > Logout <
+        /button> <
+        /div>
 
-            {/* Stats Cards */}
-            <div style={styles.statsGrid}>
-                <div style={{...styles.statCard, borderLeft: '4px solid #dc3545'}}>
-                    <div style={styles.statValue}>{stats.pending}</div>
-                    <div style={styles.statLabel}>Pending Complaints</div>
-                    <div style={styles.statIcon}>⏳</div>
-                </div>
-                <div style={{...styles.statCard, borderLeft: '4px solid #ffc107'}}>
-                    <div style={styles.statValue}>{stats.inProgress}</div>
-                    <div style={styles.statLabel}>In Progress</div>
-                    <div style={styles.statIcon}>🔄</div>
-                </div>
-                <div style={{...styles.statCard, borderLeft: '4px solid #28a745'}}>
-                    <div style={styles.statValue}>{stats.resolved}</div>
-                    <div style={styles.statLabel}>Resolved</div>
-                    <div style={styles.statIcon}>✅</div>
-                </div>
-                <div style={{...styles.statCard, borderLeft: '4px solid #FF9933'}}>
-                    <div style={styles.statValue}>{stats.total}</div>
-                    <div style={styles.statLabel}>Total Complaints</div>
-                    <div style={styles.statIcon}>📊</div>
-                </div>
-            </div>
+        { /* Stats Cards */ } <
+        div style = { styles.statsGrid } >
+        <
+        div style = {
+            {...styles.statCard, borderLeft: '4px solid #dc3545' } } >
+        <
+        div style = { styles.statValue } > { stats.pending } < /div> <
+        div style = { styles.statLabel } > Pending Complaints < /div> <
+        div style = { styles.statIcon } > ⏳ < /div> <
+        /div> <
+        div style = {
+            {...styles.statCard, borderLeft: '4px solid #ffc107' } } >
+        <
+        div style = { styles.statValue } > { stats.inProgress } < /div> <
+        div style = { styles.statLabel } > In Progress < /div> <
+        div style = { styles.statIcon } > 🔄 < /div> <
+        /div> <
+        div style = {
+            {...styles.statCard, borderLeft: '4px solid #28a745' } } >
+        <
+        div style = { styles.statValue } > { stats.resolved } < /div> <
+        div style = { styles.statLabel } > Resolved < /div> <
+        div style = { styles.statIcon } > ✅ < /div> <
+        /div> <
+        div style = {
+            {...styles.statCard, borderLeft: '4px solid #FF9933' } } >
+        <
+        div style = { styles.statValue } > { stats.total } < /div> <
+        div style = { styles.statLabel } > Total Complaints < /div> <
+        div style = { styles.statIcon } > 📊 < /div> <
+        /div> <
+        /div>
 
-            {/* Quick Actions */}
-            <div style={styles.actionsGrid}>
-                <Link to="/user/raise-complaint" style={styles.actionCard}>
-                    <FaPlusCircle size={48} color="#FF9933" />
-                    <h3 style={styles.actionTitle}>Raise Complaint</h3>
-                    <p style={styles.actionDesc}>Report a new issue in your area</p>
-                    <span style={styles.actionArrow}>→</span>
-                </Link>
-                <Link to="/user/my-complaints" style={styles.actionCard}>
-                    <FaList size={48} color="#138808" />
-                    <h3 style={styles.actionTitle}>My Complaints</h3>
-                    <p style={styles.actionDesc}>Track status of your complaints</p>
-                    <span style={styles.actionArrow}>→</span>
-                </Link>
-            </div>
+        { /* Quick Actions */ } <
+        div style = { styles.actionsGrid } >
+        <
+        Link to = "/user/raise-complaint"
+        style = { styles.actionCard } >
+        <
+        FaPlusCircle size = { 48 }
+        color = "#FF9933" / >
+        <
+        h3 style = { styles.actionTitle } > Raise Complaint < /h3> <
+        p style = { styles.actionDesc } > Report a new issue in your area < /p> <
+        span style = { styles.actionArrow } > → < /span> <
+        /Link> <
+        Link to = "/user/my-complaints"
+        style = { styles.actionCard } >
+        <
+        FaList size = { 48 }
+        color = "#138808" / >
+        <
+        h3 style = { styles.actionTitle } > My Complaints < /h3> <
+        p style = { styles.actionDesc } > Track status of your complaints < /p> <
+        span style = { styles.actionArrow } > → < /span> <
+        /Link> <
+        /div>
 
-            {/* Recent Complaints */}
-            <div style={styles.recentSection}>
-                <h3 style={styles.sectionTitle}>Recent Complaints</h3>
-                {complaints.length === 0 ? (
-                    <div style={styles.noData}>
-                        <p style={styles.noDataText}>No complaints yet</p>
-                        <Link to="/user/raise-complaint" style={styles.raiseBtn}>
-                            Raise Your First Complaint
-                        </Link>
-                    </div>
-                ) : (
-                    <div style={styles.complaintsList}>
-                        {complaints.slice(0, 3).map(complaint => (
-                            <Link to={`/user/complaint/${complaint.id}`} key={complaint.id} style={styles.complaintCard}>
-                                <div style={styles.complaintHeader}>
-                                    <div>
-                                        <h4 style={styles.complaintTitle}>{complaint.title}</h4>
-                                        <p style={styles.complaintDesc}>
-                                            {complaint.description.length > 100 
-                                                ? complaint.description.substring(0, 100) + '...' 
-                                                : complaint.description}
-                                        </p>
-                                    </div>
-                                    <div style={styles.complaintRight}>
-                                        <span style={{
-                                            ...styles.statusBadge,
-                                            background: getStatusColor(complaint.status)
-                                        }}>
-                                            {getStatusIcon(complaint.status)} {getStatusText(complaint.status)}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div style={styles.complaintFooter}>
-                                    <span style={styles.complaintDate}>
-                                        {new Date(complaint.created_at).toLocaleDateString('en-IN', {
-                                            day: 'numeric',
-                                            month: 'short',
-                                            year: 'numeric'
-                                        })}
-                                    </span>
-                                    <span style={styles.viewDetails}>View Details →</span>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                )}
-                {complaints.length > 3 && (
-                    <Link to="/user/my-complaints" style={styles.viewAllLink}>
-                        View All Complaints ({stats.total})
-                    </Link>
-                )}
-            </div>
+        { /* Recent Complaints */ } <
+        div style = { styles.recentSection } >
+        <
+        h3 style = { styles.sectionTitle } > Recent Complaints < /h3> {
+            complaints.length === 0 ? ( <
+                div style = { styles.noData } >
+                <
+                p style = { styles.noDataText } > No complaints yet < /p> <
+                Link to = "/user/raise-complaint"
+                style = { styles.raiseBtn } >
+                Raise Your First Complaint <
+                /Link> <
+                /div>
+            ) : ( <
+                div style = { styles.complaintsList } > {
+                    complaints.slice(0, 3).map(complaint => ( <
+                        Link to = { `/user/complaint/${complaint.id}` }
+                        key = { complaint.id }
+                        style = { styles.complaintCard } >
+                        <
+                        div style = { styles.complaintHeader } >
+                        <
+                        div >
+                        <
+                        h4 style = { styles.complaintTitle } > { complaint.title } < /h4> <
+                        p style = { styles.complaintDesc } > {
+                            complaint.description && complaint.description.length > 100 ?
+                            complaint.description.substring(0, 100) + '...' :
+                                complaint.description
+                        } <
+                        /p> <
+                        /div> <
+                        div style = { styles.complaintRight } >
+                        <
+                        span style = {
+                            {
+                                ...styles.statusBadge,
+                                    background: getStatusColor(complaint.status)
+                            }
+                        } > { getStatusIcon(complaint.status) } { getStatusText(complaint.status) } <
+                        /span> <
+                        /div> <
+                        /div> <
+                        div style = { styles.complaintFooter } >
+                        <
+                        span style = { styles.complaintDate } > {
+                            complaint.created_at ? new Date(complaint.created_at).toLocaleDateString('en-IN', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric'
+                            }) : ''
+                        } <
+                        /span> <
+                        span style = { styles.viewDetails } > View Details→ < /span> <
+                        /div> <
+                        /Link>
+                    ))
+                } <
+                /div>
+            )
+        } {
+            complaints.length > 3 && ( <
+                Link to = "/user/my-complaints"
+                style = { styles.viewAllLink } >
+                View All Complaints({ stats.total }) <
+                /Link>
+            )
+        } <
+        /div>
 
-            {/* Quick Tips */}
-            <div style={styles.tipsSection}>
-                <h3 style={styles.tipsTitle}>💡 Quick Tips</h3>
-                <ul style={styles.tipsList}>
-                    <li>📸 Upload clear photos of the issue</li>
-                    <li>📍 Enable location for faster resolution</li>
-                    <li>📝 Describe the problem in detail</li>
-                    <li>📞 Keep your phone number updated for SMS alerts</li>
-                </ul>
-            </div>
-        </div>
+        { /* Quick Tips */ } <
+        div style = { styles.tipsSection } >
+        <
+        h3 style = { styles.tipsTitle } > 💡Quick Tips < /h3> <
+        ul style = { styles.tipsList } >
+        <
+        li > 📸Upload clear photos of the issue < /li> <
+        li > 📍Enable location
+        for faster resolution < /li> <
+        li > 📝Describe the problem in detail < /li> <
+        li > 📞Keep your phone number updated
+        for SMS alerts < /li> <
+        /ul> <
+        /div> <
+        /div>
     );
 };
 
@@ -291,11 +353,7 @@ const styles = {
         fontSize: '16px',
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
-        transition: 'background 0.3s',
-        ':hover': {
-            background: '#c82333'
-        }
+        gap: '8px'
     },
     statsGrid: {
         display: 'grid',
@@ -341,13 +399,9 @@ const styles = {
         textDecoration: 'none',
         color: '#333',
         boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-        transition: 'transform 0.3s, boxShadow 0.3s',
         position: 'relative',
         overflow: 'hidden',
-        ':hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0 6px 20px rgba(0,0,0,0.15)'
-        }
+        textAlign: 'center'
     },
     actionTitle: {
         margin: '15px 0 10px 0',
@@ -396,11 +450,7 @@ const styles = {
         color: 'white',
         textDecoration: 'none',
         borderRadius: '8px',
-        fontWeight: 'bold',
-        transition: 'background 0.3s',
-        ':hover': {
-            background: '#e68a00'
-        }
+        fontWeight: 'bold'
     },
     complaintsList: {
         display: 'flex',
@@ -413,11 +463,7 @@ const styles = {
         borderRadius: '10px',
         textDecoration: 'none',
         color: '#333',
-        transition: 'boxShadow 0.3s',
-        ':hover': {
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            borderColor: '#FF9933'
-        }
+        display: 'block'
     },
     complaintHeader: {
         display: 'flex',
@@ -474,12 +520,7 @@ const styles = {
         textDecoration: 'none',
         fontSize: '16px',
         fontWeight: 'bold',
-        padding: '10px',
-        borderRadius: '8px',
-        transition: 'background 0.3s',
-        ':hover': {
-            background: '#f8f9fa'
-        }
+        padding: '10px'
     },
     tipsSection: {
         background: 'white',

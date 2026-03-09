@@ -9,17 +9,17 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('user'); // 'user' or 'leader'
     const [loading, setLoading] = useState(false);
-    
+
     const { signIn } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
             const result = await signIn(email, password);
-            
+
             if (result.success) {
                 toast.success('Login successful!');
                 // Redirect based on role
@@ -38,78 +38,97 @@ const Login = () => {
         }
     };
 
-    return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h2 style={styles.title}>🇮🇳 VikasDrishti</h2>
-                <h3 style={styles.subtitle}>Sign In</h3>
+    return ( <
+        div style = { styles.container } >
+        <
+        div style = { styles.card } >
+        <
+        h2 style = { styles.title } > VikasDrishti < /h2> <
+        h3 style = { styles.subtitle } > Sign In < /h3>
 
-                {/* Role Selector */}
-                <div style={styles.roleSelector}>
-                    <button
-                        style={role === 'user' ? styles.roleActive : styles.roleButton}
-                        onClick={() => setRole('user')}
-                    >
-                        👤 Citizen
-                    </button>
-                    <button
-                        style={role === 'leader' ? styles.roleActive : styles.roleButton}
-                        onClick={() => setRole('leader')}
-                    >
-                        👥 Leader/MLA
-                    </button>
-                </div>
+        { /* Role Selector */ } <
+        div style = { styles.roleSelector } >
+        <
+        button style = { role === 'user' ? styles.roleActive : styles.roleButton }
+        onClick = {
+            () => setRole('user') } >
+        👤Citizen <
+        /button> <
+        button style = { role === 'leader' ? styles.roleActive : styles.roleButton }
+        onClick = {
+            () => setRole('leader') } >
+        👥Leader / MLA <
+        /button> <
+        /div>
 
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    <div style={styles.inputGroup}>
-                        <FaUser style={styles.icon} />
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            style={styles.input}
-                            required
-                        />
-                    </div>
+        <
+        form onSubmit = { handleSubmit }
+        style = { styles.form } >
+        <
+        div style = { styles.inputGroup } >
+        <
+        FaUser style = { styles.icon }
+        /> <
+        input type = "email"
+        placeholder = "Email"
+        value = { email }
+        onChange = {
+            (e) => setEmail(e.target.value) }
+        style = { styles.input }
+        required /
+        >
+        <
+        /div>
 
-                    <div style={styles.inputGroup}>
-                        <FaLock style={styles.icon} />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            style={styles.input}
-                            required
-                        />
-                    </div>
+        <
+        div style = { styles.inputGroup } >
+        <
+        FaLock style = { styles.icon }
+        /> <
+        input type = "password"
+        placeholder = "Password"
+        value = { password }
+        onChange = {
+            (e) => setPassword(e.target.value) }
+        style = { styles.input }
+        required /
+        >
+        <
+        /div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        style={loading ? styles.buttonDisabled : styles.button}
-                    >
-                        {loading ? 'Signing in...' : 'Sign In'} <FaSignInAlt />
-                    </button>
-                </form>
+        <
+        button type = "submit"
+        disabled = { loading }
+        style = { loading ? styles.buttonDisabled : styles.button } >
+        { loading ? 'Signing in...' : 'Sign In' } < FaSignInAlt / >
+        <
+        /button> <
+        /form>
 
-                <div style={styles.links}>
-                    <Link to="/forgot-password" style={styles.link}>
-                        Forgot Password?
-                    </Link>
-                    <Link to="/register" style={styles.link}>
-                        Create New Account
-                    </Link>
-                </div>
+        <
+        div style = { styles.links } >
+        <
+        Link to = "/forgot-password"
+        style = { styles.link } >
+        Forgot Password ?
+        <
+        /Link> <
+        Link to = "/register"
+        style = { styles.link } >
+        Create New Account <
+        /Link> <
+        /div>
 
-                <div style={styles.demoInfo}>
-                    <p><strong>Demo Credentials:</strong></p>
-                    <p>User: user@demo.com / password123</p>
-                    <p>Leader: leader@demo.com / password123</p>
-                </div>
-            </div>
-        </div>
+        <
+        div style = { styles.demoInfo } >
+        <
+        p > < strong > Demo Credentials : < /strong></p >
+        <
+        p > User: user @demo.com / password123 < /p> <
+        p > Leader: leader @demo.com / password123 < /p> <
+        /div> <
+        /div> <
+        /div>
     );
 };
 

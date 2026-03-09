@@ -5,127 +5,192 @@ import { FaHeart, FaGithub, FaTwitter, FaLinkedin, FaEnvelope, FaPhone } from 'r
 const Footer = () => {
     const currentYear = new Date().getFullYear();
 
-    return (
-        <footer style={styles.footer}>
-            <div style={styles.container}>
-                {/* Main Footer Content */}
-                <div style={styles.mainContent}>
-                    {/* About Section */}
-                    <div style={styles.section}>
-                        <h3 style={styles.sectionTitle}>
-                            <span style={styles.logoIcon}>🇮🇳</span> VikasDrishti
-                        </h3>
-                        <p style={styles.description}>
-                            A hyper-local governance platform connecting citizens with their leaders 
-                            for transparent and accountable development.
-                        </p>
-                        <div style={styles.contactInfo}>
-                            <p style={styles.contactItem}>
-                                <FaEnvelope style={styles.contactIcon} /> support@vikasdrishti.gov.in
-                            </p>
-                            <p style={styles.contactItem}>
-                                <FaPhone style={styles.contactIcon} /> +91 11-2345-6789
-                            </p>
-                        </div>
-                    </div>
+    return ( <
+        footer style = { styles.footer } >
+        <
+        div style = { styles.container } > { /* Main Footer Content */ } <
+        div style = { styles.mainContent } > { /* About Section */ } <
+        div style = { styles.section } >
+        <
+        h3 style = { styles.sectionTitle } >
+        <
+        span style = { styles.logoIcon } > < /span> VikasDrishti <
+        /h3> <
+        p style = { styles.description } >
+        A hyper - local governance platform connecting citizens with their leaders
+        for transparent and accountable development. <
+        /p> <
+        div style = { styles.contactInfo } >
+        <
+        p style = { styles.contactItem } >
+        <
+        FaEnvelope style = { styles.contactIcon }
+        /> support@vikasdrishti.gov.in <
+        /p> <
+        p style = { styles.contactItem } >
+        <
+        FaPhone style = { styles.contactIcon }
+        /> +91 11-2345-6789 <
+        /p> <
+        /div> <
+        /div>
 
-                    {/* Quick Links */}
-                    <div style={styles.section}>
-                        <h3 style={styles.sectionTitle}>Quick Links</h3>
-                        <ul style={styles.linkList}>
-                            <li style={styles.linkItem}>
-                                <Link to="/" style={styles.link}>Home</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/about" style={styles.link}>About Us</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/how-it-works" style={styles.link}>How It Works</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/contact" style={styles.link}>Contact</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/faq" style={styles.link}>FAQ</Link>
-                            </li>
-                        </ul>
-                    </div>
+        { /* Quick Links */ } <
+        div style = { styles.section } >
+        <
+        h3 style = { styles.sectionTitle } > Quick Links < /h3> <
+        ul style = { styles.linkList } >
+        <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/"
+        style = { styles.link } > Home < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/about"
+        style = { styles.link } > About Us < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/how-it-works"
+        style = { styles.link } > How It Works < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/contact"
+        style = { styles.link } > Contact < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/faq"
+        style = { styles.link } > FAQ < /Link> <
+        /li> <
+        /ul> <
+        /div>
 
-                    {/* For Citizens */}
-                    <div style={styles.section}>
-                        <h3 style={styles.sectionTitle}>For Citizens</h3>
-                        <ul style={styles.linkList}>
-                            <li style={styles.linkItem}>
-                                <Link to="/user/raise-complaint" style={styles.link}>Raise Complaint</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/user/my-complaints" style={styles.link}>Track Complaints</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/register?role=user" style={styles.link}>Register as Citizen</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/schemes" style={styles.link}>Government Schemes</Link>
-                            </li>
-                        </ul>
-                    </div>
+        { /* For Citizens */ } <
+        div style = { styles.section } >
+        <
+        h3 style = { styles.sectionTitle } > For Citizens < /h3> <
+        ul style = { styles.linkList } >
+        <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/user/raise-complaint"
+        style = { styles.link } > Raise Complaint < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/user/my-complaints"
+        style = { styles.link } > Track Complaints < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/register?role=user"
+        style = { styles.link } > Register as Citizen < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/schemes"
+        style = { styles.link } > Government Schemes < /Link> <
+        /li> <
+        /ul> <
+        /div>
 
-                    {/* For Leaders */}
-                    <div style={styles.section}>
-                        <h3 style={styles.sectionTitle}>For Leaders</h3>
-                        <ul style={styles.linkList}>
-                            <li style={styles.linkItem}>
-                                <Link to="/leader/map" style={styles.link}>Geofence Map</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/leader/complaints" style={styles.link}>Manage Complaints</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/leader/send-update" style={styles.link}>Send Updates</Link>
-                            </li>
-                            <li style={styles.linkItem}>
-                                <Link to="/register?role=leader" style={styles.link}>Register as Leader</Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        { /* For Leaders */ } <
+        div style = { styles.section } >
+        <
+        h3 style = { styles.sectionTitle } > For Leaders < /h3> <
+        ul style = { styles.linkList } >
+        <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/leader/map"
+        style = { styles.link } > Geofence Map < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/leader/complaints"
+        style = { styles.link } > Manage Complaints < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/leader/send-update"
+        style = { styles.link } > Send Updates < /Link> <
+        /li> <
+        li style = { styles.linkItem } >
+        <
+        Link to = "/register?role=leader"
+        style = { styles.link } > Register as Leader < /Link> <
+        /li> <
+        /ul> <
+        /div> <
+        /div>
 
-                {/* Social Links */}
-                <div style={styles.socialSection}>
-                    <h3 style={styles.socialTitle}>Follow Us</h3>
-                    <div style={styles.socialLinks}>
-                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink}>
-                            <FaGithub style={styles.socialIcon} />
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink}>
-                            <FaTwitter style={styles.socialIcon} />
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink}>
-                            <FaLinkedin style={styles.socialIcon} />
-                        </a>
-                        <a href="mailto:support@vikasdrishti.gov.in" style={styles.socialLink}>
-                            <FaEnvelope style={styles.socialIcon} />
-                        </a>
-                    </div>
-                </div>
+        { /* Social Links */ } <
+        div style = { styles.socialSection } >
+        <
+        h3 style = { styles.socialTitle } > Follow Us < /h3> <
+        div style = { styles.socialLinks } >
+        <
+        a href = "https://github.com"
+        target = "_blank"
+        rel = "noopener noreferrer"
+        style = { styles.socialLink } >
+        <
+        FaGithub style = { styles.socialIcon }
+        /> <
+        /a> <
+        a href = "https://twitter.com"
+        target = "_blank"
+        rel = "noopener noreferrer"
+        style = { styles.socialLink } >
+        <
+        FaTwitter style = { styles.socialIcon }
+        /> <
+        /a> <
+        a href = "https://linkedin.com"
+        target = "_blank"
+        rel = "noopener noreferrer"
+        style = { styles.socialLink } >
+        <
+        FaLinkedin style = { styles.socialIcon }
+        /> <
+        /a> <
+        a href = "mailto:support@vikasdrishti.gov.in"
+        style = { styles.socialLink } >
+        <
+        FaEnvelope style = { styles.socialIcon }
+        /> <
+        /a> <
+        /div> <
+        /div>
 
-                {/* Bottom Bar */}
-                <div style={styles.bottomBar}>
-                    <p style={styles.copyright}>
-                        © {currentYear} VikasDrishti. All rights reserved.
-                    </p>
-                    <div style={styles.bottomLinks}>
-                        <Link to="/privacy" style={styles.bottomLink}>Privacy Policy</Link>
-                        <Link to="/terms" style={styles.bottomLink}>Terms of Service</Link>
-                        <Link to="/accessibility" style={styles.bottomLink}>Accessibility</Link>
-                        <Link to="/sitemap" style={styles.bottomLink}>Sitemap</Link>
-                    </div>
-                    <p style={styles.madeWith}>
-                        Made with <FaHeart style={styles.heartIcon} /> for Digital India
-                    </p>
-                </div>
-            </div>
-        </footer>
+        { /* Bottom Bar */ } <
+        div style = { styles.bottomBar } >
+        <
+        p style = { styles.copyright } > ©{ currentYear }
+        VikasDrishti.All rights reserved. <
+        /p> <
+        div style = { styles.bottomLinks } >
+        <
+        Link to = "/privacy"
+        style = { styles.bottomLink } > Privacy Policy < /Link> <
+        Link to = "/terms"
+        style = { styles.bottomLink } > Terms of Service < /Link> <
+        Link to = "/accessibility"
+        style = { styles.bottomLink } > Accessibility < /Link> <
+        Link to = "/sitemap"
+        style = { styles.bottomLink } > Sitemap < /Link> <
+        /div> <
+        p style = { styles.madeWith } >
+        Made with < FaHeart style = { styles.heartIcon }
+        /> for Digital India <
+        /p> <
+        /div> <
+        /div> <
+        /footer>
     );
 };
 
