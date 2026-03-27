@@ -12,10 +12,10 @@ A geofencing-based platform that notifies citizens about development projects in
 - React.js
 - Supabase (PostgreSQL + PostGIS)
 - Leaflet Maps
-- Vercel Hosting
+- Netlify Hosting
 
 ## Live Demo
-[Add your Vercel URL here after deployment]
+  https://vikasdrishti.netlify.app/login
 
 
 
