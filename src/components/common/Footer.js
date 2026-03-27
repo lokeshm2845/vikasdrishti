@@ -57,7 +57,7 @@ const Footer = () => {
         style = { styles.link } > How It Works < /Link> <
         /li> <
         li style = { styles.linkItem } >
-<<<<<<< HEAD
+
 
         <div style={styles.socialLinks}>
         <a href="https://github.com/lokeshm2845/vikasdrishti" target="_blank" rel="noopener noreferrer" style={styles.socialLink}>
@@ -74,7 +74,7 @@ const Footer = () => {
         </a>
         </div>
         
-=======
+
         <
         Link to = "/contact"
         style = { styles.link } > Contact < /Link> <
@@ -94,7 +94,7 @@ const Footer = () => {
         ul style = { styles.linkList } >
         <
         li style = { styles.linkItem } >
->>>>>>> 6f393111fa97773551f9c04b72579dcba79e9622
+
         <
         Link to = "/user/raise-complaint"
         style = { styles.link } > Raise Complaint < /Link> <

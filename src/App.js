@@ -26,7 +26,7 @@ import GeofenceMap from './components/leader/GeofenceMap';
 import SendUpdate from './components/leader/SendUpdate';
 import ComplaintsList from './components/leader/ComplaintsList';
 
-<<<<<<< HEAD
+
 // Page Components
 import Home from './components/pages/Home';
 import About from './components/pages/About';
@@ -34,8 +34,7 @@ import HowItWorks from './components/pages/HowItWorks';
 import Contact from './components/pages/Contact';
 import FAQ from './components/pages/FAQ';
 
-=======
->>>>>>> 6f393111fa97773551f9c04b72579dcba79e9622
+
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRole }) => {
     const { user, userRole, loading } = useAuth();
@@ -217,8 +216,6 @@ function AppContent() {
             /ProtectedRoute>
         }
         />
-
-<<<<<<< HEAD
         {/* Public Pages */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -226,8 +223,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />
 
-=======
->>>>>>> 6f393111fa97773551f9c04b72579dcba79e9622
+\
         { /* Default Redirect */ } <
         Route path = "/"
         element = {
