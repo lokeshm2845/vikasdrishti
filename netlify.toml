@@ -1,0 +1,13 @@
+[build]
+  command = "CI= npm run build"
+  publish = "build"
+
+[build.environment]
+  REACT_APP_SUPABASE_URL = "https://wizboithevemqvlradjs.supabase.co"
+  REACT_APP_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpemJvaXRoZXZlbXF2bHJhZGpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NjYzMDIsImV4cCI6MjA4ODU0MjMwMn0.6uWUNXeHnnGMI85h2uVAZrL-XSccrXQD1o0wmPm23l4"
+
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
