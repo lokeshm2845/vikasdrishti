@@ -223,7 +223,7 @@ function AppContent() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />
 
-\
+
         { /* Default Redirect */ } <
         Route path = "/"
         element = {
