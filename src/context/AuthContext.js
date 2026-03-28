@@ -10,151 +10,145 @@ export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Get initial session
-        const getInitialSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            setUser(session?.user ?? null);
-            
-            if (session?.user) {
-                await fetchUserRole(session.user.id);
-            }
-            
+        console.log('AuthProvider mounted - checking session...');
+        
+        // Add a timeout to prevent infinite loading
+        const timeoutId = setTimeout(() => {
+            console.log('⚠️ Loading timeout - forcing loading to false');
             setLoading(false);
+        }, 5000);
+
+        const checkUser = async () => {
+            try {
+                // Get current session
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                
+                if (sessionError) {
+                    console.error('Session error:', sessionError);
+                    setError(sessionError.message);
+                    clearTimeout(timeoutId);
+                    setLoading(false);
+                    return;
+                }
+
+                console.log('Session found:', session ? 'Yes' : 'No');
+                
+                if (session?.user) {
+                    setUser(session.user);
+                    await fetchUserProfile(session.user.id);
+                } else {
+                    console.log('No user logged in');
+                    clearTimeout(timeoutId);
+                    setLoading(false);
+                }
+            } catch (err) {
+                console.error('Unexpected error in checkUser:', err);
+                setError(err.message);
+                clearTimeout(timeoutId);
+                setLoading(false);
+            }
         };
 
-        getInitialSession();
+        checkUser();
 
         // Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (event, session) => {
+                console.log('Auth state changed:', event);
                 setUser(session?.user ?? null);
+                
                 if (session?.user) {
-                    await fetchUserRole(session.user.id);
+                    await fetchUserProfile(session.user.id);
                 } else {
                     setUserRole(null);
                     setUserData(null);
+                    clearTimeout(timeoutId);
+                    setLoading(false);
                 }
-                setLoading(false);
             }
         );
 
         return () => {
             subscription?.unsubscribe();
+            clearTimeout(timeoutId);
         };
     }, []);
 
-    const fetchUserRole = async (userId) => {
+    const fetchUserProfile = async (userId) => {
         try {
-            // Check if user exists in users table
-            const { data: userData, error: userError } = await supabase
+            console.log('Fetching user profile for:', userId);
+            
+            // Check in users table
+            const { data: userProfile, error: userError } = await supabase
                 .from('users')
                 .select('*')
                 .eq('auth_id', userId)
                 .maybeSingle();
 
-            if (userData) {
+            if (userProfile) {
+                console.log('Found user profile in users table');
                 setUserRole('user');
-                setUserData(userData);
+                setUserData(userProfile);
+                setLoading(false);
                 return;
             }
 
-            // Check if user exists in leaders table
-            const { data: leaderData, error: leaderError } = await supabase
+            // Check in leaders table
+            const { data: leaderProfile, error: leaderError } = await supabase
                 .from('leaders')
                 .select('*')
                 .eq('auth_id', userId)
                 .maybeSingle();
 
-            if (leaderData) {
+            if (leaderProfile) {
+                console.log('Found user profile in leaders table');
                 setUserRole('leader');
-                setUserData(leaderData);
+                setUserData(leaderProfile);
+                setLoading(false);
                 return;
             }
-        } catch (error) {
-            console.error('Error fetching user role:', error);
-        }
-    };
 
-    const signUp = async (email, password, role, profileData) => {
-        try {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password
-            });
-
-            if (error) throw error;
-
-            if (data.user) {
-                if (role === 'user') {
-                    const { error: profileError } = await supabase
-                        .from('users')
-                        .insert([{
-                            auth_id: data.user.id,
-                            email: email,
-                            ...profileData
-                        }]);
-
-                    if (profileError) throw profileError;
-                } else if (role === 'leader') {
-                    const { error: profileError } = await supabase
-                        .from('leaders')
-                        .insert([{
-                            auth_id: data.user.id,
-                            email: email,
-                            ...profileData
-                        }]);
-
-                    if (profileError) throw profileError;
-                }
-            }
-
-            return { success: true, user: data.user };
-        } catch (error) {
-            return { success: false, error: error.message };
+            console.log('No profile found in either table');
+            setLoading(false);
+            
+        } catch (err) {
+            console.error('Error fetching profile:', err);
+            setError(err.message);
+            setLoading(false);
         }
     };
 
     const signIn = async (email, password) => {
         try {
+            console.log('Attempting sign in...');
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password
             });
 
             if (error) throw error;
+            console.log('Sign in successful:', data.user.email);
             return { success: true, user: data.user };
         } catch (error) {
+            console.error('Sign in error:', error);
             return { success: false, error: error.message };
         }
     };
 
     const signOut = async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) console.error('Error signing out:', error);
-    };
-
-    const resetPassword = async (email) => {
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`,
-            });
+            console.log('Signing out...');
+            const { error } = await supabase.auth.signOut();
             if (error) throw error;
+            setUser(null);
+            setUserRole(null);
+            setUserData(null);
             return { success: true };
         } catch (error) {
-            return { success: false, error: error.message };
-        }
-    };
-
-    const updatePassword = async (newPassword) => {
-        try {
-            const { error } = await supabase.auth.updateUser({
-                password: newPassword
-            });
-            if (error) throw error;
-            return { success: true };
-        } catch (error) {
+            console.error('Sign out error:', error);
             return { success: false, error: error.message };
         }
     };
@@ -164,12 +158,15 @@ export const AuthProvider = ({ children }) => {
         userRole,
         userData,
         loading,
-        signUp,
+        error,
         signIn,
-        signOut,
-        resetPassword,
-        updatePassword
+        signOut
     };
+
+    // Show error if there is one
+    if (error) {
+        console.error('Auth Error:', error);
+    }
 
     return (
         <AuthContext.Provider value={value}>
