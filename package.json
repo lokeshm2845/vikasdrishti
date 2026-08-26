@@ -1,0 +1,10 @@
+{
+  "name": "vikasdrishti-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && npm start",
+    "start": "cd frontend && npm start",
+    "build": "cd frontend && npm run build"
+  }
+}
