@@ -7,7 +7,7 @@ import { FaUser, FaEnvelope, FaPhone, FaLock, FaUserCheck, FaUserTie, FaBuilding
 const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { signUp } = useAuth();
+    const { user, userRole, signUp } = useAuth();
 
     const queryParams = new URLSearchParams(location.search);
     const initialRole = queryParams.get('role') === 'leader' ? 'leader' : 'user';
@@ -30,6 +30,16 @@ const Register = () => {
         party: ''
     });
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user && userRole) {
+            if (userRole === 'leader') {
+                navigate('/leader/dashboard', { replace: true });
+            } else {
+                navigate('/user/dashboard', { replace: true });
+            }
+        }
+    }, [user, userRole, navigate]);
 
     useEffect(() => {
         const paramRole = new URLSearchParams(location.search).get('role');

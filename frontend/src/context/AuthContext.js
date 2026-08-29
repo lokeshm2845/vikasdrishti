@@ -106,33 +106,66 @@ export const AuthProvider = ({ children }) => {
 
         const initializeAuth = async () => {
             try {
-                const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve('timeout'), 200));
-                const sessionPromise = supabase.auth.getSession();
+                let activeSession = null;
+                try {
+                    const sessionRes = await supabase.auth.getSession();
+                    activeSession = sessionRes?.data?.session;
+                } catch (e) {
+                    console.warn('Supabase session fetch bypassed:', e);
+                }
 
-                const raceResult = await Promise.race([sessionPromise, timeoutPromise]);
-
-                if (raceResult !== 'timeout' && raceResult?.data?.session?.user) {
-                    const activeUser = raceResult.data.session.user;
+                if (activeSession?.user) {
+                    const activeUser = activeSession.user;
                     if (isMounted) {
                         setUser(activeUser);
                         const { role, profile } = await fetchUserRoleAndProfile(activeUser.id, activeUser.email);
                         setUserRole(role);
                         setUserData(profile);
+                        localStorage.setItem('vd_demo_role', role);
+                        localStorage.setItem('vd_demo_user', JSON.stringify(profile));
                     }
                 } else if (isMounted) {
-                    // Guaranteed Guest Mode on app boot - NO auto login!
-                    setUser(null);
-                    setUserRole(null);
-                    setUserData(null);
-                    localStorage.removeItem('vd_demo_role');
-                    localStorage.removeItem('vd_demo_user');
+                    // Check local storage for persistent demo/local login
+                    const savedRole = localStorage.getItem('vd_demo_role');
+                    const savedUserRaw = localStorage.getItem('vd_demo_user');
+                    if (savedRole && savedUserRaw) {
+                        try {
+                            const parsedProfile = JSON.parse(savedUserRaw);
+                            setUser({ id: parsedProfile.auth_id || parsedProfile.id || 'demo_user', email: parsedProfile.email });
+                            setUserRole(savedRole);
+                            setUserData(parsedProfile);
+                        } catch (e) {
+                            setUser(null);
+                            setUserRole(null);
+                            setUserData(null);
+                        }
+                    } else {
+                        setUser(null);
+                        setUserRole(null);
+                        setUserData(null);
+                    }
                 }
             } catch (error) {
                 console.error('Auth initialization error:', error);
                 if (isMounted) {
-                    setUser(null);
-                    setUserRole(null);
-                    setUserData(null);
+                    const savedRole = localStorage.getItem('vd_demo_role');
+                    const savedUserRaw = localStorage.getItem('vd_demo_user');
+                    if (savedRole && savedUserRaw) {
+                        try {
+                            const parsedProfile = JSON.parse(savedUserRaw);
+                            setUser({ id: parsedProfile.auth_id || parsedProfile.id || 'demo_user', email: parsedProfile.email });
+                            setUserRole(savedRole);
+                            setUserData(parsedProfile);
+                        } catch (e) {
+                            setUser(null);
+                            setUserRole(null);
+                            setUserData(null);
+                        }
+                    } else {
+                        setUser(null);
+                        setUserRole(null);
+                        setUserData(null);
+                    }
                 }
             } finally {
                 if (isMounted) setLoading(false);
@@ -149,10 +182,14 @@ export const AuthProvider = ({ children }) => {
                         const { role, profile } = await fetchUserRoleAndProfile(session.user.id, session.user.email);
                         setUserRole(role);
                         setUserData(profile);
-                    } else if ((event === 'SIGNED_OUT' || !session) && isMounted) {
+                        localStorage.setItem('vd_demo_role', role);
+                        localStorage.setItem('vd_demo_user', JSON.stringify(profile));
+                    } else if (event === 'SIGNED_OUT' && isMounted) {
                         setUser(null);
                         setUserRole(null);
                         setUserData(null);
+                        localStorage.removeItem('vd_demo_role');
+                        localStorage.removeItem('vd_demo_user');
                     }
                 } catch (error) {
                     console.error('Auth state change error:', error);

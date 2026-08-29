@@ -7,7 +7,7 @@ import { FaUser, FaLock, FaSignInAlt, FaUserCheck, FaUserTie } from 'react-icons
 const Login = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { signIn } = useAuth();
+    const { user, userRole, signIn } = useAuth();
 
     const queryParams = new URLSearchParams(location.search);
     const initialRole = queryParams.get('role') === 'leader' ? 'leader' : 'user';
@@ -16,6 +16,16 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState(initialRole);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user && userRole) {
+            if (userRole === 'leader') {
+                navigate('/leader/dashboard', { replace: true });
+            } else {
+                navigate('/user/dashboard', { replace: true });
+            }
+        }
+    }, [user, userRole, navigate]);
 
     useEffect(() => {
         const paramRole = new URLSearchParams(location.search).get('role');

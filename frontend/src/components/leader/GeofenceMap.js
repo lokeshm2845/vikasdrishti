@@ -17,6 +17,7 @@ L.Icon.Default.mergeOptions({
 const GeofenceMap = ({ leaderData: propLeaderData }) => {
     const { userData: contextUserData } = useAuth();
     const leaderData = propLeaderData || contextUserData || { name: 'Priya Sharma (MLA)', title: 'Elected Member of Legislative Assembly', constituency: 'Shirpur & Dhule / Ward 4' };
+    const leaderId = leaderData?.id || 101;
 
     const [polygon, setPolygon] = useState([]);
     const [voters, setVoters] = useState([]);
@@ -27,7 +28,7 @@ const GeofenceMap = ({ leaderData: propLeaderData }) => {
     const [loading, setLoading] = useState(false);
 
     const loadComplaints = useCallback(async () => {
-        const result = await complaintService.getLeaderComplaints(leaderData.id || 101);
+        const result = await complaintService.getLeaderComplaints(leaderId);
         if (result.success && result.data && result.data.length > 0) {
             setComplaints(result.data);
         } else {
@@ -37,7 +38,7 @@ const GeofenceMap = ({ leaderData: propLeaderData }) => {
                 { id: 2, complaint_id: 'CMP1700000002', title: 'Streetlight Failure near Bus Stand', description: 'Dark alley near Shirpur main road.', category: 'streetlight', status: 'in_progress', users: { name: 'Parth Bhoi', phone: '+91 98100 11101' } }
             ]);
         }
-    }, [leaderData]);
+    }, [leaderId]);
 
     useEffect(() => {
         loadComplaints();
